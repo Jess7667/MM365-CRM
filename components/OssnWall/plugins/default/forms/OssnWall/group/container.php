@@ -2,9 +2,9 @@
 /**
  *    OpenSource-SocialNetwork
  *
- * @package   (softlab24.com).ossn
+ * @package   (openteknik.com).ossn
  * @author    OSSN Core Team <info@opensource-socialnetwork.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @copyright (C) OpenTeknik LLC
  * @license   General Public Licence http://opensource-socialnetwork.com/licence
  * @link      http://www.opensource-socialnetwork.com/licence
  */
@@ -30,10 +30,10 @@
         <?php
 			echo ossn_view_menu('wall/container/controls/group', 'wall/menus/container_controls'); 
 		?>      
-        <div style="float:right;">
+    </div>
+    <div class='ossn-wall-post-button-container'>
             <div class="ossn-loading ossn-hidden"></div>
             <input class="btn btn-primary ossn-wall-post" type="submit" value="<?php echo ossn_print('post'); ?>" />
-        </div>
-    </div>
+    </div>    
 	 <input type="hidden" value="<?php echo $params['group']['group']->guid; ?>" name="wallowner"/>
 </div>

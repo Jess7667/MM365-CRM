@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -466,7 +466,7 @@ class OssnComponents extends OssnDatabase {
 						"com_id='{$id}'"
 				);
 				$this->settings   = $this->select($params);
-				if($this->settings->active == 1) {
+				if($this->settings && $this->settings->active == 1) {
 						return true;
 				}
 				return false;

@@ -16,3 +16,8 @@ The following developers contributed to this project:
 * Kevin Breen (https://github.com/kevthehermit)
 * Muh Arief Ikhsan Yafi (https://web.facebook.com/muharief.iy)
 * James Chang(https://www.opensource-socialnetwork.org/u/zuyan)
+* Alexander 손은석 | Hanmesoft Corporation (http://www.hanmesoft.com)
+* l3afblow3r | https://github.com/l3afblow3r
+* Haydar Alkaduhimi (https://www.opensource-socialnetwork.org/u/haydar)
+* ystartgo (https://github.com/ystartgo)
+* AntzCode (https://github.com/AntzCode)

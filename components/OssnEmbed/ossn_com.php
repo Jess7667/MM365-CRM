@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -75,7 +75,9 @@ function ossn_embed_wall_template_item($hook, $type, $return){
  * @access private
  */
 function ossn_embed_comments_template_params($hook, $type, $return, $params){
-	$return['comment']['comments:post'] = linkify($return['comment']['comments:post']);
+	if(isset($return['comment']['comments:post'])){
+		$return['comment']['comments:post'] = linkify($return['comment']['comments:post']);
+	}
 	return $return;
 }
 //initilize ossn wall

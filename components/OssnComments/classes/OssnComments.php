@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -16,8 +16,9 @@ class OssnComments extends OssnAnnotation {
 		 */
 		public static function getType($object) {
 				$type = array(
-						"comments:post" => 'post',
-						"comments:entity" => 'entity'
+						"comments:post" => 'post', // <- this is actually object
+						"comments:entity" => 'entity',
+						"comments:object" => 'object',
 				);
 				return $type[$object];
 		}
@@ -37,11 +38,16 @@ class OssnComments extends OssnAnnotation {
 						return false;
 				}
 				//[B]comment is added if the post/entity has been deleted already #1645
-				if($type == 'post') {
+				//renewed for objects also
+				if($type == 'post' || $type == 'object') {
 						$postc = ossn_get_object($subject_id);
 						if(!$postc) {
 								return false;
 						}
+						ossn_trigger_callback('comment', 'before:created', array(
+									'type' => $type,
+									'object' => $postc,
+						));						
 				}
 				
 				if($type == 'entity') {
@@ -49,6 +55,10 @@ class OssnComments extends OssnAnnotation {
 						if(!$entityc) {
 								return false;
 						}
+						ossn_trigger_callback('comment', 'before:created', array(
+									'type' => 'entity',
+									'entity' => $entityc,
+						));
 				}
 				
 				$cancomment = false;
@@ -83,6 +93,7 @@ class OssnComments extends OssnAnnotation {
 										'jpg',
 										'png',
 										'jpeg',
+										'jfif',
 										'gif'
 								));
 								$file->owner_guid = $this->getAnnotationId();
@@ -156,7 +167,9 @@ class OssnComments extends OssnAnnotation {
 				$vars['subject_guid'] = $subject;
 				$vars['type']         = "comments:{$type}";
 				$vars['order_by']     = 'a.id DESC';
-				$vars['limit']        = $this->limit;
+				if(isset($this->limit)){
+					$vars['limit']        = $this->limit;
+				}
 				if(!isset($this->page_limit) || $this->page_limit === false) {
 						$vars['page_limit'] = false;
 				} else {

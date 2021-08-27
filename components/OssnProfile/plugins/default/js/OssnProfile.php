@@ -2,46 +2,25 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
 Ossn.RegisterStartupFunction(function() {
 	$(document).ready(function() {
-		var cYear = (new Date).getFullYear();
-		var alldays = Ossn.Print('datepicker:days');
-		var shortdays = alldays.split(",");
-		var allmonths = Ossn.Print('datepicker:months');
-		var shortmonths = allmonths.split(",");
-
-		var datepick_args = {
-			changeMonth: true,
-			changeYear: true,
-			dateFormat: 'dd/mm/yy',
-			yearRange: '1900:' + cYear,
-		};
-
-		if (Ossn.isLangString('datepicker:days')) {
-			datepick_args['dayNamesMin'] = shortdays;
-		}
-		if (Ossn.isLangString('datepicker:months')) {
-			datepick_args['monthNamesShort'] = shortmonths;
-		}
-		$("input[name='birthdate']").datepicker(datepick_args);
-
 		/**
 		 * Reposition cover
 		 */
-		$('#reposition-profile-cover').click(function() {
+		$('#reposition-profile-cover').on('click', function() {
 			$('#profile-menu').hide();
 			$('#cover-menu').show();
 			$('.profile-cover-controls').hide();
 			$('.profile-cover').unbind('mouseenter').unbind('mouseleave');
 			Ossn.Drag();
 		});
-		$("#upload-photo").submit(function(event) {
+		$("#upload-photo").on('submit', function(event) {
 			event.preventDefault();
 			var formData = new FormData($(this)[0]);
 			var $url = Ossn.site_url + 'action/profile/photo/upload';
@@ -74,7 +53,7 @@ Ossn.RegisterStartupFunction(function() {
 			return false;
 		});
 
-		$("#upload-cover").submit(function(event) {
+		$("#upload-cover").on('submit', function(event) {
 			event.preventDefault();
 			//console.log('no');
 			var formData = new FormData($(this)[0]);
@@ -151,11 +130,13 @@ Ossn.repositionCOVER = function() {
 			$("#draggable").draggable('destroy');
 			$('#profile-menu').show();
 			$('#cover-menu').hide();
-			$('.profile-cover').hover(function() {
+			
+			$('.profile-cover').on('mouseenter', function(){
 				$('.profile-cover-controls').show();
-			}, function() {
-				$('.profile-cover-controls').hide();
 			});
+			$('.profile-cover').on('mouseleave', function(){
+				$('.profile-cover-controls').hide();
+			});					
 		},
 	});
 };
@@ -166,11 +147,12 @@ Ossn.repositionCOVER = function() {
  */
 Ossn.RegisterStartupFunction(function() {
 	$(document).ready(function() {
-		$('.profile-photo').hover(function() {
-			$('.upload-photo').slideDown();
-		}, function() {
-			$('.upload-photo').slideUp();
+		$('.profile-photo').on('mouseenter', function(){
+				$('.upload-photo').slideDown();
 		});
+		$('.profile-photo').on('mouseleave', function(){
+			$('.upload-photo').slideUp();
+		});		
 	});
 });
 /**
@@ -180,10 +162,11 @@ Ossn.RegisterStartupFunction(function() {
  */
 Ossn.RegisterStartupFunction(function() {
 	$(document).ready(function() {
-		$('.profile-cover').hover(function() {
-			$('.profile-cover-controls').show();
-		}, function() {
-			$('.profile-cover-controls').hide();
-		});
+			$('.profile-cover').on('mouseenter', function(){
+				$('.profile-cover-controls').show();
+			});
+			$('.profile-cover').on('mouseleave', function(){
+				$('.profile-cover-controls').hide();
+			});		
 	});
 });

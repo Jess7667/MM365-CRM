@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -45,7 +45,7 @@ if(!$params['user']){
 			</div>
 			<div class="user">
             <a class="owner-link" href="<?php echo $params['user']->profileURL(); ?>"> <?php echo $params['user']->fullname; ?> </a>
-            <?php if ($params['show_group'] == true) {
+            <?php if (isset($params['show_group']) && $params['show_group'] == true) {
                 $group = ossn_get_group_by_guid($params['post']->owner_guid);
                 ?>
                <i class="fa fa-angle-right fa-lg"></i>
@@ -75,11 +75,13 @@ if(!$params['user']){
             <?php } ?>
          
 		</div>
-        <?php if($params['ismember'] === 1){  ?>
+        
 		<div class="comments-likes">
-			<div class="menu-likes-comments-share">
-				<?php echo ossn_view_menu('postextra', 'wall/menus/postextra');?>
-			</div>
+			<?php if($params['ismember'] === 1){  ?>
+				<div class="menu-likes-comments-share">
+					<?php echo ossn_view_menu('postextra', 'wall/menus/postextra');?>
+				</div>
+            <?php } ?>
          	<?php
       		  if (ossn_is_hook('post', 'likes')) {
           			  echo ossn_call_hook('post', 'likes', $params['post']);
@@ -87,13 +89,17 @@ if(!$params['user']){
       		  ?>           
 			<div class="comments-list">
               <?php
-          			  if (ossn_is_hook('post', 'comments')) {
-                			echo ossn_call_hook('post', 'comments', $params['post']);
-           			   }
-            		?>            				
+          		if(ossn_is_hook('post', 'comments')) {
+						$vars = array();
+						$vars['post'] =  $params['post'];
+						if($params['ismember'] != 1){
+								$vars['allow_comment'] = false;
+						}
+                		echo ossn_call_hook('post', 'comments', $vars);
+           		}
+            	?>            				
 			</div>
 		</div>
-        <?php } ?>
 	</div>
 </div>
 <!-- ./ wall item -->

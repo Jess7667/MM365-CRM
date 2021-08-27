@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -12,14 +12,15 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
 */
 body {
 	font-family: 'Roboto Slab', serif;
+        font-size: 14px;
 }
 .logo {
 
@@ -361,7 +362,7 @@ footer a {
 }
 
 .ossn-light {
-	opacity: 0.4;
+	opacity: 0.4 !important;
 }
 .ossn-halt {
 	position: absolute;
@@ -553,4 +554,32 @@ footer a {
     margin: 10px 0;
     padding: 10px;
     max-width: 300px;
+}
+/*****************
+ BS 5
+***************/
+.card-spacing {
+	margin-top:5px;
+}	
+.card {
+-webkit-box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+ box-shadow: 0 1px 1px rgb(0 0 0 / 5%);
+}
+.card-header a {
+	color: inherit;
+    font-size: 16px;         
+}
+.card-header {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;   
+}
+.card-body p {
+    margin: 0 0 10px;
+}
+thead, tbody, tfoot, tr, td, th {
+    border-top: 1px solid #ddd;
+}
+.table > :not(caption) > * > * {
+    border-bottom-width: 0;
 }

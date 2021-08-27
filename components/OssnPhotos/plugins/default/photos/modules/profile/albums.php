@@ -2,15 +2,18 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
 echo '<div class="ossn-profile-module-albums">';
 $albums = new OssnAlbums;
-$photos = $albums->GetAlbums($params['user']->guid);
+$photos = $albums->GetAlbums($params['user']->guid, array(
+		'page_limit' => 9,			
+		'offset' => 1, //avoid it effecting by offset URL param,
+));
 if ($photos) {
     foreach ($photos as $photo) {
         $images = new OssnPhotos;

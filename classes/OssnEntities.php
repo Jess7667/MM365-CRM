@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -46,6 +46,9 @@ class OssnEntities extends OssnDatabase {
 				}
 				if(empty($this->type)) {
 						$this->type = 'entity';
+				}
+				if(!isset($this->subtype)){
+						$this->subtype = false;	
 				}
 				$this->data = new stdClass;
 				
@@ -95,6 +98,11 @@ class OssnEntities extends OssnDatabase {
 								$this->permission,
 								$this->active
 						);
+						$owner_guid  = $this->owner_guid;
+						$type	     = $this->type;
+						$subtype     = $this->subtype;
+						$timecreated = $this->time_created;
+						
 						if($this->insert($this->params)) {
 								//[B] Entities added via single DB connection may result in wrong last_id #1668
 								//As this supposed to be return a actual entity ID rather metadata guid
@@ -114,10 +122,10 @@ class OssnEntities extends OssnDatabase {
 								$this->insert($this->params);
 								
 								$args['guid']	      = $this->inserted_entity_guid;
-								$args['owner_guid']   = $this->params['values'][0];
-								$args['type']         = $this->params['values'][1];
-								$args['subtype']      = $this->params['values'][2];
-								$args['time_created'] = $this->params['values'][3];
+								$args['owner_guid']   = $owner_guid;
+								$args['type']         = $type;
+								$args['subtype']      = $subtype;
+								$args['time_created'] = $timecreated;
 								ossn_trigger_callback('entity', 'created', $args);
 								return $this->inserted_entity_guid;
 						}
@@ -208,6 +216,10 @@ class OssnEntities extends OssnDatabase {
 						//code re arrange 1st July 2015 $arsalanshah
 						if(!empty($this->datavars)) {
 								$data_dbvars = $this->get_data_dbvars();
+								//PHP8 migration
+								if($data_dbvars === false){
+									$data_dbvars = array();	
+								}
 								foreach($this->datavars as $vars => $value) {
 										if(!in_array($vars, $data_dbvars)) {
 												$this->subtype = $vars;
@@ -233,8 +245,12 @@ class OssnEntities extends OssnDatabase {
 				if(!$this->data) {
 						return false;
 				}
+				$vars = array();
 				foreach($this->data as $name => $value) {
 						$vars[$name] = $value;
+				}
+				if(empty($vars)){
+					return false;	
 				}
 				return $vars;
 		}

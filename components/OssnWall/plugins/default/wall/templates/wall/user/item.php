@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -63,20 +63,23 @@ if ($params['user']->guid !== $params['post']->owner_guid) {
 		<div class="post-contents">
 			<p><?php echo $params['text']; ?></p>
 			 <?php
-						if(!empty($params['friends'])){
-	                        foreach ($params['friends'] as $friend) {
-								if(!empty($friend)){
-	    	                        $user = ossn_user_by_guid($friend);
-    	    	                    $url = $user->profileURL();
-        	    	                $friends[] = "<a href='{$url}'>{$user->fullname}</a>";
-								}
-                	        }
-							if(!empty($friends)){
-								echo '<div class="friends">';
-								echo implode(', ', $friends);
-								echo '</div>';
+				if(!empty($params['friends'])){
+					foreach ($params['friends'] as $friend) {
+						if(!empty($friend)){
+							$user = ossn_user_by_guid($friend);
+							//[B] Wall site crash when mentioning members under certain conditions. #1865
+							if($user){
+								$url = $user->profileURL();
+								$friends[] = "<a href='{$url}'>{$user->fullname}</a>";
 							}
 						}
+					}
+					if(!empty($friends)){
+						echo '<div class="friends">';
+						echo implode(', ', $friends);
+						echo '</div>';
+					}
+				}
               ?>
             <?php
             if (!empty($image)) {
@@ -96,8 +99,10 @@ if ($params['user']->guid !== $params['post']->owner_guid) {
       		  ?>           
 			<div class="comments-list">
               <?php
-          			  if (ossn_is_hook('post', 'comments')) {
-                			echo ossn_call_hook('post', 'comments', $params['post']);
+          			  if (ossn_is_hook('post', 'comments')){
+                			$vars = array();
+                			$vars['post'] =  $params['post'];						  
+                			echo ossn_call_hook('post', 'comments', $vars);
            			   }
             		?>            				
 			</div>

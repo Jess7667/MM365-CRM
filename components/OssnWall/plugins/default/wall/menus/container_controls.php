@@ -3,15 +3,19 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
 if(!empty($params['menu'])){ 
 	foreach($params['menu'] as $item){
 		$name = OssnTranslit::urlize($item[0]['name']);
-?><li class="<?php echo $item[0]['class'];?> ossn-wall-container-control-menu-<?php echo $name;?>"><?php echo $item[0]['text'];?></li>  
+		$class = '';
+		if(isset($item[0]['class'])){
+			$class = $item[0]['class'];	
+		}
+?><li class="<?php echo $class;?> ossn-wall-container-control-menu-<?php echo $name;?>"><?php echo $item[0]['text'];?></li>  
 <?php
 	}
 }

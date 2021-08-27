@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -41,6 +41,7 @@ $admin->setFile('logo_admin');
 $admin->setExtension(array(
 		'jpg',
 		'jpeg',
+		'jfif',
 ));
 if(isset($admin->file['tmp_name']) && $admin->typeAllowed()){
 	$file = $admin->file['tmp_name'];

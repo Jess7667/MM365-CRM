@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -18,7 +18,7 @@ function ossn_css() {
 		ossn_register_page('css', 'ossn_css_pagehandler');
 		ossn_add_hook('css', 'register', 'ossn_css_trigger');
 		ossn_extend_view('ossn/site/head', 'ossn_css_site');
-		ossn_extend_view('ossn/admin/head', 'ossn_css_admin');
+		ossn_extend_view('ossn/admin/head', 'ossn_css_admin');			
 }
 
 /**
@@ -136,14 +136,20 @@ function ossn_unload_css($name, $type = 'site') {
  */
 function ossn_css_site() {
 		global $Ossn;
+		$Ossn->cssheadExternalLoaded = array();
+		$Ossn->cssheadExternalLoaded['site'] = array();	
+		
 		$url      = ossn_site_url();
 		//load external css
-		$external = $Ossn->cssheadExternal['site'];
-		if(!empty($external)) {
+		if(isset($Ossn->cssheadExternal['site']) && !empty($Ossn->cssheadExternal['site'])) {
+				$external = $Ossn->cssheadExternal['site'];
 				foreach($external as $item) {
+					if(!isset($Ossn->cssheadExternalLoaded['site'][$item]) && isset($Ossn->cssExternal[$item])){ 
+						$Ossn->cssheadExternalLoaded['site'][$item] = true;
 						echo ossn_html_css(array(
 								'href' => $Ossn->cssExternal[$item]
 						));
+					}
 				}
 		}
 		
@@ -170,14 +176,20 @@ function ossn_css_site() {
  */
 function ossn_css_admin() {
 		global $Ossn;
+		$Ossn->cssheadExternalLoaded = array();
+		$Ossn->cssheadExternalLoaded['admin'] = array();	
+		
 		$url      = ossn_site_url();
 		//load external css
+		if(isset($Ossn->cssheadExternal['admin']) && !empty($Ossn->cssheadExternal['admin'])){
 		$external = $Ossn->cssheadExternal['admin'];
-		if(!empty($external)) {
 				foreach($external as $item) {
+					if(!isset($Ossn->cssheadExternalLoaded['admin'][$item]) && isset($Ossn->cssExternal[$item])){ 
+						$Ossn->cssheadExternalLoaded['admin'][$item] = true;					
 						echo ossn_html_css(array(
 								'href' => $Ossn->cssExternal[$item]
 						));
+					}
 				}
 		}
 		
@@ -266,5 +278,8 @@ function ossn_unload_external_css($name, $type = 'site') {
 		$css = array_search($name, $Ossn->cssheadExternal[$type]);
 		if($css !== false) {
 				unset($Ossn->cssheadExternal[$type][$css]);
+				if(isset($Ossn->cssheadExternalLoaded[$type]) && isset($Ossn->cssheadExternalLoaded[$type][$name])){			
+					unset($Ossn->cssheadExternalLoaded[$type][$name]);
+				}
 		}
 }

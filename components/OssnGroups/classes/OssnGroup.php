@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -34,15 +34,13 @@ class OssnGroup extends OssnObject {
 				self::initAttributes();
 				$this->title       = trim($params['name']);
 				$this->description = trim($params['description']);
-				if(empty($this->title)) {
+				if(empty($this->title) || ($params['privacy'] != OSSN_PRIVATE && $params['privacy'] != OSSN_PUBLIC)) {
 						return false;
 				}
 				$this->owner_guid = $params['owner_guid'];
 				$this->type       = 'user';
 				$this->subtype    = 'ossngroup';
-				if($params['privacy'] == OSSN_PRIVATE || $params['privacy'] == OSSN_PUBLIC) {
-						$this->data->membership = $params['privacy'];
-				}
+				$this->data->membership = $params['privacy'];
 				if($guid = $this->addObject()) {
 						ossn_add_relation($params['owner_guid'], $this->getGuid(), 'group:join');
 						ossn_add_relation($this->getGuid(), $params['owner_guid'], 'group:join:approve');
@@ -68,27 +66,22 @@ class OssnGroup extends OssnObject {
 		/**
 		 * Get User groups
 		 *
-		 * @params $owner_guid Guid of owner creating group
+		 * @param integer $owner_guid Guid of owner creating group
+		 * @param array   $params Extra options
 		 *
 		 * @return object;
 		 */
-		public function getUserGroups($owner_guid) {
-				$this->owner_guid = $owner_guid;
-				$this->type       = 'user';
-				$this->subtype    = 'ossngroup';
-				return $this->getObjectByOwner();
-		}
-		
-		/**
-		 * Get site group
-		 *
-		 * @return object;
-		 */
-		public function getGroups() {
-				$this->type    = 'user';
-				//fixes #154
-				$this->subtype = 'ossngroup';
-				return $this->getObjectsByTypes();
+		public function getUserGroups($owner_guid, $params = array()) {
+				if(!empty($owner_guid)) {
+						$args = array(
+							'type' => 'user',
+							'subtype' => 'ossngroup',
+							'owner_guid' => $owner_guid
+						);
+						$vars = array_merge($args, $params);
+						return $this->searchObject($vars);
+				}
+				return false;
 		}
 		
 		/**
@@ -418,6 +411,7 @@ class OssnGroup extends OssnObject {
 				$params['wheres']  = array(
 						"(title LIKE '%{$q}%' OR description LIKE '%{$q}%')"
 				);
+				$params['count']   = false;
 				$vars              = array_merge($params, $args);
 				$search            = $this->searchObject($vars, true);
 				if(!$search) {
@@ -452,6 +446,7 @@ class OssnGroup extends OssnObject {
 						'jpg',
 						'png',
 						'jpeg',
+						'jfif',
 						'gif'
 				));
 				$this->OssnFile->setPath('cover/');
@@ -619,8 +614,12 @@ class OssnGroup extends OssnObject {
 		 * @access public;
 		 */
 		public function coverParameters($guid) {
-				$parameters = ossn_get_group_by_guid($guid)->cover;
-				return json_decode($parameters);
+				$group = ossn_get_group_by_guid($guid);
+				if(isset($group->cover)){
+					$parameters = $group->cover;
+					return json_decode($parameters);
+				}
+				return false;
 		}
 		/**
 		 * Get user groups (owned groups and groups user member of)

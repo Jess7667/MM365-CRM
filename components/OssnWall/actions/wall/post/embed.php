@@ -3,15 +3,15 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
 //Post on edit not returning JSON type callback #1506
 header('Content-Type: application/json'); 
 // restore html linebreaks and remove double backslashes
-$text = str_replace('\n', '<br/>', input('text'));
+$text = str_replace('\n', "<br/>\n", input('text'));
 $text = str_replace("\\\\", "\\", $text);
 
 /* LinkPreview support --------------------------------- */

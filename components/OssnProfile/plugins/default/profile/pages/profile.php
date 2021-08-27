@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -15,9 +15,17 @@ $cover = new OssnProfile;
 $coverp = $cover->coverParameters($user->guid);
 $cover = $cover->getCoverURL($user);
 
+if(!isset($coverp[0])){
+	$coverp[0] = '';
+}	
+if(!isset($coverp[1])){
+	$coverp[1] = '';
+}	
+$cover_top = '';
 if(!empty($coverp[0])){
 	$cover_top = "top:{$coverp[0]};";
 }
+$cover_left = '';
 if(!empty($coverp[1])){
 	$cover_left = "left:{$coverp[1]};";
 }
@@ -33,7 +41,7 @@ if (ossn_isLoggedIn()) {
 			<div class="<?php echo $class; ?>">
 				<div class="top-container">
 					<div id="container" class="profile-cover">
-						<?php if (ossn_loggedin_user()->guid == $user->guid) { ?>
+						<?php if (ossn_loggedin_user() && ossn_loggedin_user()->guid == $user->guid) { ?>
 						<div class="profile-cover-controls" style="display:none;cursor:pointer;">
 							<a href="javascript:void(0);" onclick="Ossn.Clk('.coverfile');" class='btn-action change-cover'>
 								<?php echo ossn_print( 'change:cover'); ?>
@@ -51,7 +59,7 @@ if (ossn_isLoggedIn()) {
 						<img id="draggable" class="profile-cover-img" src="<?php echo $cover; ?>" style='<?php echo $cover_top; ?><?php echo $cover_left; ?>' data-top='<?php echo $coverp[0]; ?>' data-left='<?php echo $coverp[1]; ?>'/>
 					</div>
 					<div class="profile-photo">
-						<?php if (ossn_loggedin_user()->guid == $user->guid) { ?>
+						<?php if (ossn_loggedin_user() && ossn_loggedin_user()->guid == $user->guid) { ?>
 						<div class="upload-photo" style="display:none;cursor:pointer;">
 							<span onclick="Ossn.Clk('.pfile');"><?php echo ossn_print('change:photo'); ?></span>
 

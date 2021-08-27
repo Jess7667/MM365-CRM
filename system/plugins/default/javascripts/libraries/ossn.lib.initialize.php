@@ -6,9 +6,7 @@
 Ossn.register_callback('ossn', 'init', 'ossn_startup_functions_compatibility');
 Ossn.register_callback('ossn', 'init', 'ossn_image_url_cache');
 Ossn.register_callback('ossn', 'init', 'ossn_administrator_update_widget');
-Ossn.register_callback('ossn', 'init', 'ossn_administrator_user_delete');
 Ossn.register_callback('ossn', 'init', 'ossn_makesure_confirmation');
-Ossn.register_callback('ossn', 'init', 'ossn_component_delelte_confirmation');
 Ossn.register_callback('ossn', 'init', 'ossn_system_messages');
 Ossn.register_callback('ossn', 'init', 'ossn_user_signup_form');
 Ossn.register_callback('ossn', 'init', 'ossn_topbar_dropdown');	
@@ -70,7 +68,7 @@ function ossn_user_signup_form(){
  */
 function ossn_system_messages(){
 	$(document).ready(function(){
-		if($('.ossn-system-messages').find('a').length){
+		if($('.ossn-system-messages').find('button').length){
 			$('.ossn-system-messages').find('.ossn-system-messages-inner').show();
 
 			setTimeout(function(){
@@ -90,7 +88,7 @@ function ossn_system_messages(){
  */
 function ossn_topbar_dropdown(){
 	$(document).ready(function(){
-		$('.ossn-topbar-dropdown-menu-button').click(function(){
+		$('.ossn-topbar-dropdown-menu-button').on('click', function(){
 			if($('.ossn-topbar-dropdown-menu-content').is(":not(:visible)")){
 				$('.ossn-topbar-dropdown-menu-content').show();
 			} else {
@@ -101,55 +99,23 @@ function ossn_topbar_dropdown(){
 	});
 }
 /**
- * Show exception on component delete
- *
- * @return void
- */
-function ossn_component_delelte_confirmation(){
-	$(document).ready(function(){
-		//show a confirmation mssage before delete component #444
-		$('.ossn-com-delete-button').click(function(e){
-			e.preventDefault();
-			var del = confirm(Ossn.Print('ossn:component:delete:exception'));
-			if(del == true){
-				var actionurl = $(this).attr('href');
-				window.location = actionurl;
-			}
-		});
-	});
-}
-/**
  * Show exception , are you sure?
  *
  * @return void
  */
 function ossn_makesure_confirmation(){
 	$(document).ready(function(){
-		$('.ossn-make-sure').click(function(e){
+		$('.ossn-make-sure').on('click', function(e){
 			e.preventDefault();
-			var del = confirm(Ossn.Print('ossn:exception:make:sure'));
+			var msg = 'ossn:exception:make:sure';
+			if(typeof $(this).data('ossn-msg') !== "undefined"){
+				msg = $(this).data('ossn-msg');
+			}
+			var del = confirm(Ossn.Print(msg));
 			if(del == true){
 				var actionurl = $(this).attr('href');
 				window.location = actionurl;
 			}
-		});
-	});
-}
-/**
- * Show exception on user delete
- *
- * @return void
- */
-function ossn_administrator_user_delete(){
-	$(document).ready(function(){
-		$('.userdelete').click(function(e){
-			e.preventDefault();
-			var del = confirm(Ossn.Print('ossn:user:delete:exception'));
-			if(del == true){
-				var actionurl = $(this).attr('href');
-				window.location = actionurl;
-			}
-
 		});
 	});
 }
@@ -208,8 +174,10 @@ function ossn_image_url_cache($callback, $type, $params){
 						var split = data.split('?');
 						base = split[0] + '?';
 					}
-					args["ossn_cache"] = Ossn.Config.cache.last_cache;
-					$(this).attr('src', base + jQuery.param(args));
+					if(!args['ossn_cache']){
+						args["ossn_cache"] = Ossn.Config.cache.last_cache;
+						$(this).attr('src', base + jQuery.param(args));
+					}
 				}
 			});
 		}

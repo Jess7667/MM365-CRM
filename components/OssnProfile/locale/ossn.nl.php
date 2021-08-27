@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
+ * @package   (openteknik.com).ossn
  * @author    Dieter <info@marohn.nl>
- * @copyright 2014-2018 SOFTLAB24 LIMITED
+ * @copyright 2014-2018 OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -18,7 +18,7 @@ $nl = array(
 	'ossn:profile:picture:updated' => 'Profielfoto gewijzigd.',
 	'ossn:profile:cover:picture:updated' => 'Coverfoto gewijzigd.',
 	'profile:cover:err1' => 'Coverfoto is te klein',
-	'profile:cover:err1:detail' => 'Maak de coverfoto minimaal 850x300px of groter.',
+	'profile:cover:err1:detail' => 'Maak de coverfoto minimaal 1040 x 300px of groter.',
 	'language' => 'Taal',
 );
 ossn_register_languages('nl', $nl); 

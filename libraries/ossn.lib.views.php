@@ -2,13 +2,13 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
-
+global $VIEW;
 $VIEW = new stdClass;
 $VIEW->register = array();
 
@@ -188,8 +188,9 @@ function ossn_get_context() {
  */
 function ossn_set_page_layout($layout, $params = array()) {
     if (!empty($layout)) {
-        $theme = new OssnThemes;
-        $active_theme = $theme->getActive();
+        //unused variabled removed below $arsalanshah
+		//$theme = new OssnThemes;
+        //$active_theme = $theme->getActive();
         return ossn_plugin_view("theme/page/layout/{$layout}", $params);
     }
 }

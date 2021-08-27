@@ -3,15 +3,15 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
 ossn_trigger_callback('comment', 'load', $params['comment']);
 $comment = arrayObject($params['comment'], 'OssnWall');
 $user = ossn_user_by_guid($comment->owner_guid);
-if ($comment->type == 'comments:post' || $comment->type == 'comments:entity') {
+if ($comment->type == 'comments:post' || $comment->type == 'comments:entity' || $comment->type == 'comments:object') {
     $type = 'annotation';
 }
 $datalikes = '';
@@ -28,6 +28,10 @@ if($datalikes  > 0){
 			$last_three_icons[$item->subtype] = $item->subtype;
 	}
 	$last_three = array_slice($last_three_icons, -3);
+}
+$allow_comment_like = true;
+if(isset($comment->allow_comment_like) && $comment->allow_comment_like == false){
+	$allow_comment_like = false;
 }
 ?>
 <div class="comments-item" id="comments-item-<?php echo $comment->id; ?>">
@@ -47,6 +51,8 @@ if($datalikes  > 0){
 						echo "<span class='comment-text'>";
 						        if ($comment->type == 'comments:entity') {
 						            echo ' '.nl2br($comment->getParam('comments:entity'));
+						        } elseif ($comment->type == 'comments:object') {
+						            echo ' '.nl2br($comment->getParam('comments:object'));
 						        } elseif ($comment->type == 'comments:post') {
 						            echo ' '.nl2br($comment->getParam('comments:post'));
 						        }
@@ -62,7 +68,7 @@ if($datalikes  > 0){
 				<div class="comment-metadata">
 					<div class="time-created"><?php echo ossn_user_friendly_time($comment->time_created); ?></div>
 					<?php
-						if (class_exists('OssnLikes')) {
+						if (class_exists('OssnLikes') && $allow_comment_like) {
 							if (ossn_isLoggedIn()) {
 						             	 if (!$OssnLikes->isLiked($comment->id, ossn_loggedin_user()->guid, $type)) {
 												echo ossn_plugin_view('output/url', array(

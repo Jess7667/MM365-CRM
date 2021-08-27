@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -42,6 +42,12 @@ class OssnObject extends OssnEntities {
 				}
 				if(empty($this->order_by)) {
 						$this->order_by = '';
+				}
+				if(!isset($this->description)){
+						$this->description = '';	
+				}
+				if(!isset($this->title)){
+						$this->title = '';
 				}
 		}
 		
@@ -97,58 +103,6 @@ class OssnObject extends OssnEntities {
 								ossn_trigger_callback('object', 'created', $args);
 								return $this->createdObject;
 						}
-				}
-				return false;
-		}
-		/**
-		 * Get object by owner guid;
-		 *
-		 * Requires    $object->owner_guid
-		 *             $object->order_by To sort the data in a recordset
-		 *
-		 * @return object
-		 */
-		public function getObjectByOwner() {
-				if(empty($this->type)) {
-						return false;
-				}
-				$params               = array();
-				$params['type']       = $this->type;
-				$params['subtype']    = $this->subtype;
-				$params['owner_guid'] = $this->owner_guid;
-				$params['limit']      = $this->limit;
-				$params['order_by']   = $this->order_by;
-				$params['count']      = $this->count;
-				$params['page_limit'] = $this->page_limit;
-				$params['offset']     = $this->offset;
-				$objects              = $this->searchObject($params);
-				if($objects) {
-						return $objects;
-				}
-				return false;
-		}
-		
-		/**
-		 * Get object by types;
-		 *
-		 * Requires : $object->(type , subtype(optional))
-		 *            $object->order_by To sort the data in a recordset
-		 *
-		 * @return object
-		 */
-		public function getObjectsByTypes() {
-				$params               = array();
-				$params['type']       = $this->type;
-				$params['subtype']    = $this->subtype;
-				$params['owner_guid'] = $this->owner_guid;
-				$params['limit']      = $this->limit;
-				$params['order_by']   = $this->order_by;
-				$params['count']      = $this->count;
-				$params['page_limit'] = $this->page_limit;
-				$params['offset']     = $this->offset;
-				$objects              = $this->searchObject($params);
-				if($objects) {
-						return $objects;
 				}
 				return false;
 		}
@@ -334,6 +288,7 @@ class OssnObject extends OssnEntities {
 				$default = array(
 						'params' => false,
 						'search_type' => true,
+						'distinct' => false,
 						'subtype' => false,
 						'type' => false,
 						'owner_guid' => false,

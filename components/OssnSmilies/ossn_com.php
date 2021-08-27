@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -23,7 +23,7 @@ require_once(__OSSN_SMILIES__ . 'libraries/smilify.lib.php');
 function ossn_smiley_embed_init() {	
 	ossn_extend_view('css/ossn.default', 'css/smilies/emojii');
 	ossn_extend_view('css/ossn.admin.default', 'css/smilies/emojii');
- 	ossn_extend_view('js/opensource.socialnetwork', 'js/smilies/emojii');
+ 	ossn_extend_view('js/ossn.site', 'js/smilies/emojii');
     ossn_extend_view('ossn/site/head', 'js/smilies/emojii-settings');
     ossn_extend_view('ossn/admin/head', 'js/smilies/emojii-settings');
 	ossn_extend_view('comments/attachment/buttons', 'smilies/comment/button');

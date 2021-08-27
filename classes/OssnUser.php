@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -40,6 +40,8 @@ class OssnUser extends OssnEntities {
 						$this->setPassAlgo($password_encryption_alog);
 						
 						$this->salt            = $this->generateSalt();
+						//[E] make user email lowercase when adding to db #1864
+						$this->email           = strtolower($this->email);	
 						$password              = $this->generate_password($this->password, $this->salt);
 						$activation            = md5($this->password . time() . rand());
 						$this->sendactiviation = ossn_call_hook('user', 'send:activation', false, $this->sendactiviation);
@@ -433,6 +435,9 @@ class OssnUser extends OssnEntities {
 						'limit' => false,
 						'count' => false
 				);
+				if(!isset($options['order_by'])){
+						$options['order_by'] = '';
+				}
 				$args          = array_merge($default, $options);
 				$relationships = ossn_get_relationships(array(
 						'to' => $user,
@@ -597,9 +602,11 @@ class OssnUser extends OssnEntities {
 				$default = array(
 						'keyword' => false,
 						'order_by' => false,
+						'distinct' => false,
 						'offset' => input('offset', '', 1),
 						'page_limit' => ossn_call_hook('pagination', 'page_limit', false, 10), //call hook for page limit
 						'count' => false,
+						'limit' => false,
 						'entities_pairs' => false
 				);
 				
@@ -748,10 +755,14 @@ class OssnUser extends OssnEntities {
 				if(!isset($this->icon_guid) || isset($this->icon_guid) && empty($this->icon_guid)){
 						$this->icon_guid = false;
 				}
+				if(!isset($this->icon_time)){
+					$this->icon_time = false;		
+				}
 				foreach(ossn_user_image_sizes() as $size => $dimensions){
 						$seo                   = md5($this->username . $size . $this->icon_time . $this->icon_guid);
 						$url                   = ossn_site_url("avatar/{$this->username}/{$size}/{$seo}.jpeg");
-						$this->iconURLS->$size = $url;
+						//[B] img js ossn_cache cause duplicate requests #1886
+						$this->iconURLS->$size = ossn_add_cache_to_url($url);
 				}
 				return ossn_call_hook('user', 'icon:urls', $this, $this->iconURLS);
 		}
@@ -1074,8 +1085,9 @@ class OssnUser extends OssnEntities {
 				$params['joins']    = array(
 						"JOIN ossn_entities_metadata AS emd ON e.guid = emd.guid"
 				);
+				//[E] don't show empty value genders in graphs #1887
 				$params["wheres"]   = array(
-						"e.type = 'user' AND e.subtype = 'gender'"
+						"e.type = 'user' AND e.subtype = 'gender' AND emd.value <> ''"
 				);
 				$params['group_by'] = 'gender';
 				$genders            = $this->select($params, true);
@@ -1187,7 +1199,8 @@ class OssnUser extends OssnEntities {
 				$this->type       = 'user';
 				if(parent::save()) {
 						//check if owner is loggedin user guid , if so update session
-						if(ossn_loggedin_user()->guid == $this->guid) {
+						$loggedin_user = ossn_loggedin_user();
+						if($loggedin_user && $loggedin_user->guid == $this->guid) {
 								$_SESSION['OSSN_USER'] = ossn_user_by_guid($this->guid);
 						}
 						return true;
@@ -1203,7 +1216,7 @@ class OssnUser extends OssnEntities {
 		public function canModerate() {
 				$allowed = false;
 				if(isset($this->guid) && $this instanceof OssnUser) {
-						if(($this->type == 'normal' && $this->can_moderate == 'yes') || $this->type == 'admin') {
+						if(($this->type == 'normal' && isset($this->can_moderate) && $this->can_moderate == 'yes') || $this->type == 'admin') {
 								$allowed = true;
 						}
 				}

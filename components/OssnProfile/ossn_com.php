@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -23,7 +23,12 @@ function ossn_profile() {
 		ossn_register_page('cover', 'cover_page_handler');
 		//css and js
 		ossn_extend_view('css/ossn.default', 'css/profile');
-		ossn_extend_view('js/opensource.socialnetwork', 'js/OssnProfile');
+		ossn_extend_view('js/ossn.site', 'js/OssnProfile');
+		//birthdays JS for both admin and site
+		//[B] datepicker missing on admin backed OSSN 6.0 dev $githubertus
+		ossn_extend_view('js/ossn.site.public', 'js/profile/birthdate');
+		ossn_extend_view('js/ossn.admin', 'js/profile/birthdate');
+		
 		//actions
 		if(ossn_isLoggedin()) {
 				ossn_register_action('profile/photo/upload', __OSSN_PROFILE__ . 'actions/photo/upload.php');
@@ -293,8 +298,10 @@ function get_profile_photo($user, $size) {
 		}
 		
 		$photo = $user->getProfilePhoto();
-		$etag  = $photo->guid . $photo->time_created;
-		
+		$etag  = time();
+		if($photo){
+			$etag  = $photo->guid . $photo->time_created;
+		}
 		if(isset($photo->time_created)) {
 				header("Last-Modified: " . gmdate('D, d M Y H:i:s \G\M\T', $photo->time_created));
 		}
@@ -305,7 +312,7 @@ function get_profile_photo($user, $size) {
 				exit;
 		}
 		
-		if(isset($photo->value) && !empty($photo->value)) {
+		if($photo && isset($photo->value) && !empty($photo->value)) {
 				$datadir = ossn_get_userdata("user/{$user->guid}/{$photo->value}");
 				if(!empty($size)) {
 						$image   = str_replace('profile/photo/', '', $photo->value);
@@ -339,8 +346,11 @@ function get_cover_photo($user, $params = array()) {
 				return false;
 		}
 		$photo = $user->getProfileCover();
-		$etag  = $photo->guid . $photo->time_created;
-		
+		$etag  = time();
+		if($photo){
+			$etag  = $photo->guid . $photo->time_created;
+		}
+			
 		if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == "\"$etag\"") {
 				header("HTTP/1.1 304 Not Modified");
 				exit;
@@ -500,7 +510,7 @@ function ossn_profile_photo_wall_url($photo) {
 						'profile/photo/'
 				), '', $photo->value);
 				$image     = ossn_site_url("album/getphoto/{$photo->owner_guid}/{$imagefile}?type=1");
-				return $image;
+				return ossn_add_cache_to_url($image);
 		}
 		return false;
 }
@@ -515,7 +525,7 @@ function ossn_profile_coverphoto_wall_url($photo) {
 						'profile/cover/'
 				), '', $photo->value);
 				$image     = ossn_site_url("album/getcover/{$photo->owner_guid}/{$imagefile}");
-				return $image;
+				return ossn_add_cache_to_url($image);
 		}
 		return false;
 }
@@ -545,13 +555,13 @@ function ossn_profile_images_allcomments($callback, $type, $params) {
 				ossn_unregister_menu('commentall', 'entityextra');
 				switch($params['entity']->subtype) {
 						case 'file:profile:photo':
-								$url = ossn_site_url("photos/user/view/{$params['entity']->guid}/all_comments");
+								$url = ossn_site_url("photos/user/view/{$params['entity']->guid}");
 								break;
 						case 'file:profile:cover':
-								$url = ossn_site_url("photos/cover/view/{$params['entity']->guid}/all_comments");
+								$url = ossn_site_url("photos/cover/view/{$params['entity']->guid}");
 								break;
 						case 'file:ossn:aphoto':
-								$url = ossn_site_url("photos/view/{$params['entity']->guid}/all_comments");
+								$url = ossn_site_url("photos/view/{$params['entity']->guid}");
 								break;
 				}
 				$comment = new OssnComments;

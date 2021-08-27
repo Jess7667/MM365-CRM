@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -25,7 +25,7 @@ function ossn_groups() {
 		ossn_extend_view('css/ossn.default', 'css/groups');
 		
 		//group js
-		ossn_extend_view('js/opensource.socialnetwork', 'js/groups');
+		ossn_extend_view('js/ossn.site', 'js/groups');
 		
 		//group pages
 		ossn_register_page('group', 'ossn_group_page');
@@ -262,8 +262,7 @@ function ossn_group_page($pages) {
 				$params['group']     = $group;
 				$title               = $group->title;
 				$view                = ossn_plugin_view('groups/pages/profile', $params);
-				$contents['content'] = ossn_group_layout($view);
-				$content             = ossn_set_page_layout('contents', $contents);
+				$content             = ossn_group_layout($view);
 				echo ossn_view_page($title, $content);
 		}
 }
@@ -380,7 +379,7 @@ function group_requests_page($hook, $type, $return, $params) {
  */
 function ossn_user_groups_delete($callback, $type, $params) {
 		$deleteGroup = new OssnGroup;
-		$groups      = $deleteGroup->getUserGroups($params['entity']->guid);
+		$groups      = $deleteGroup->getUserGroups($params['entity']->guid, array('page_limit' => false));
 		if($groups) {
 				foreach($groups as $group) {
 						$deleteGroup->deleteGroup($group->guid);

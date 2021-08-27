@@ -1,10 +1,10 @@
 /**
 * Open Source Social Network
 *
-* @package   (softlab24.com).ossn
+* @package   (openteknik.com).ossn
 * @author    OSSN Core Team
 <info@opensource-socialnetwork.org>
-* @copyright (C) SOFTLAB24 LIMITED
+* @copyright (C) OpenTeknik LLC
 * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
 * @link      https://www.opensource-socialnetwork.org/
 */
@@ -13,8 +13,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -37,12 +37,14 @@ if($active_sessions) {
 										$vars['message'] = $message->message;
 										$vars['time']    = $message->time;
 										$vars['id']      = $message->id;
+										$vars['instance'] = (clone $message);
 										$messageitem     = ossn_plugin_view('chat/message-item-send', $vars);
 								} else {
 										$vars['reciever'] = ossn_user_by_guid($message->message_from);
 										$vars['message']  = $message->message;
 										$vars['time']     = $message->time;
 										$vars['id']       = $message->id;
+										$vars['instance'] = (clone $message);
 										$messageitem      = ossn_plugin_view('chat/message-item-received', $vars);
 								}
 								$total          = get_object_vars($messages);
@@ -65,7 +67,7 @@ if($active_sessions) {
 				);
 		}
 }
-if($new_messages){
+if(isset($new_messages)){
 	foreach($new_messages as $item) {
 		$messages_items[$item['fid']][] = array(
 				'id' => $item['id'],
@@ -75,7 +77,8 @@ if($new_messages){
 		);
 	}
 }
-if($messages_items){
+$messages_combined = array();
+if(isset($messages_items)){
 	foreach($messages_items as $key => $mitem) {
 		$messages_combined[] = array(
 				'message' => $mitem,

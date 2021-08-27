@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -21,7 +21,7 @@ function ossn_notifications() {
 		//css
 		ossn_extend_view('css/ossn.default', 'css/notifications');
 		//js
-		ossn_extend_view('js/opensource.socialnetwork', 'js/OssnNotifications');
+		ossn_extend_view('js/ossn.site', 'js/OssnNotifications');
 		ossn_extend_view('ossn/site/head', 'js/notifications-settings');
 		
 		//pages
@@ -167,6 +167,8 @@ function ossn_notification_page($pages) {
 						if(class_exists('OssnMessages')) {
 								$messages       = new OssnMessages;
 								$count_messages = $messages->countUNREAD(ossn_loggedin_user()->guid);
+						} else {
+								$count_messages = 0;
 						}
 						if(!$count_notif) {
 								$count_notif = 0;
@@ -355,6 +357,8 @@ function ossn_notificaiton_like_annotation_hook($hook, $type, $return, $params) 
 		
 		$annotation = $annotation->getAnnotationById();
 		if($annotation) {
+				//[E] refine the like:annotation notification type: #1868
+				$params['type'] = "like:annotation:{$annotation->type}";
 				$params['owner_guid']   = $annotation->owner_guid;
 				$params['subject_guid'] = $annotation->subject_guid;
 				return $params;

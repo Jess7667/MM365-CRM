@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -12,7 +12,7 @@ $ossnwall = new OssnWall;
 $id = input('post');
 $post = $ossnwall->GetPost($id);
 if ($post->type == 'user' && !ossn_isAdminLoggedin()) {
-    if ($post->poster_guid !== ossn_loggedin_user()->guid && $post->owner_guid !== ossn_loggedin_user()->guid) {
+    if ($post->poster_guid != ossn_loggedin_user()->guid && $post->owner_guid !== ossn_loggedin_user()->guid) {
         if (!ossn_is_xhr()) {
             ossn_trigger_message(ossn_print('post:delete:fail'), 'error');
             redirect(REF);
@@ -27,7 +27,7 @@ if ($post->type == 'group' && !ossn_isAdminLoggedin()) {
     $group = $group->getGroup($post->owner_guid);
 	//lastchange group admins are unable to delete member posting on group wall #171
 	// change or operator to and
-    if (($post->poster_guid !== ossn_loggedin_user()->guid) && (ossn_loggedin_user()->guid !== $group->owner_guid)) {
+    if ($post->poster_guid != ossn_loggedin_user()->guid && ossn_loggedin_user()->guid !== $group->owner_guid) {
         if (!ossn_is_xhr()) {
             ossn_trigger_message(ossn_print('post:delete:fail'), 'error');
             redirect(REF);

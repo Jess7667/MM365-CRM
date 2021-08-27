@@ -3,9 +3,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -25,15 +25,14 @@ class OssnSitePages extends OssnObject {
         $this->type = 'site';
         $this->subtype = "sitepage:{$this->pagename}";
         //check if page exists of not
-        $this->pageget = $this->getObjectsByTypes();
-        if (!is_array($this->pageget)) {
+        if (!$this->getPage()) {
             if ($this->addObject()) {
                 return true;
             }
         } else {
             $data = array('description');
             $values = array($this->description);
-            if ($this->updateObject($data, $values, $this->pageget[0]->guid)) {
+            if ($this->updateObject($data, $values, $this->getPage()->guid)) {
                 return true;
             }
         }
@@ -46,11 +45,13 @@ class OssnSitePages extends OssnObject {
      * @return object;
      */
     public function getPage() {
-        $this->type = 'site';
-        $this->subtype = "sitepage:{$this->pagename}";
-        $this->pageget = $this->getObjectsByTypes();
-        if ($this->pageget) {
-            return $this->pageget[0];
+		$params = array(
+			'type' => 'site',
+			'subtype' => "sitepage:{$this->pagename}"
+		);
+		$sitepage = $this->searchObject($params);
+        if($sitepage) {
+			return $sitepage[0];
         }
         return false;
     }

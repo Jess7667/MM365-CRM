@@ -2,9 +2,9 @@
 /**
  *    OpenSource-SocialNetwork
  *
- * @package   (softlab24.com).ossn
+ * @package   (openteknik.com).ossn
  * @author    OSSN Core Team <info@opensource-socialnetwork.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @copyright (C) OpenTeknik LLC
  * @license   General Public Licence http://opensource-socialnetwork.com/licence
  * @link      http://www.opensource-socialnetwork.com/licence
  */
@@ -18,6 +18,8 @@ $count_notif = $notification->countNotification(ossn_loggedin_user()->guid);
 if(class_exists('OssnMessages')){
 	$messages = new OssnMessages;
 	$count_messages = $messages->countUNREAD(ossn_loggedin_user()->guid);
+} else {
+	$messages = false;
 }
 
 $friends = ossn_loggedin_user()->getFriendRequests();
@@ -26,7 +28,7 @@ if ($friends) {
 }
 ?>
 <li id="ossn-notif-friends">
-    <a onClick="Ossn.NotificationFriendsShow(this);" class="ossn-notifications-friends" href="javascript:void(0);" role="button" data-toggle="dropdown">
+    <a onClick="Ossn.NotificationFriendsShow(this);" class="ossn-notifications-friends" href="javascript:void(0);" >
                        <span>
                       <?php if ($friends_c > 0) { ?>
                           <span class="ossn-notification-container"><?php echo $friends_c; ?></span>
@@ -40,7 +42,7 @@ if ($friends) {
 </li>
 <?php if($messages){ ?>
 <li id="ossn-notif-messages">
-    <a onClick="Ossn.NotificationMessagesShow(this)" href="javascript:void(0);" class="ossn-notifications-messages" role="button" data-toggle="dropdown">
+    <a onClick="Ossn.NotificationMessagesShow(this)" href="javascript:void(0);" class="ossn-notifications-messages" >
     
                        <span>
                         <?php if ($count_messages > 0) { ?>
@@ -54,7 +56,7 @@ if ($friends) {
     </a></li>
    <?php } ?> 
 <li id="ossn-notif-notification">
-    <a href="javascript:void(0);" onClick="Ossn.NotificationShow(this)" class="ossn-notifications-notification" onClick="Ossn.NotificationShow(this)"role="button" data-toggle="dropdown"> 
+    <a href="javascript:void(0);" class="ossn-notifications-notification" onClick="Ossn.NotificationShow(this)"> 
                        <span>
                        <?php if ($count_notif > 0) { ?>
                            <span class="ossn-notification-container"><?php echo $count_notif; ?></span>
@@ -67,8 +69,8 @@ if ($friends) {
     </a>
  
 </li>
-  <div class="dropdown">
-  		<div class="dropdown-menu multi-level dropmenu-topbar-icons ossn-notifications-box">
+  <div id="notificationBox" class="dropdown">
+  		<div class="dropmenu-topbar-icons ossn-notifications-box">
         	     <div class="selected"></div>
             	 <div class="type-name"> <?php echo ossn_print('notifications'); ?> </div>
             	<div class="metadata">

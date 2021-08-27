@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -23,6 +23,6 @@ $he = array(
 		'profile:photos' => 'תמונות פרופיל',
 		
 		'profile:cover:err1' => 'תמונת כותרת קטנה מדי',
-		'profile:cover:err1:detail' => 'תמונת הכותרת צריכה להיות לפחות 850 x300 או גדולה יותר.'
+		'profile:cover:err1:detail' => 'תמונת הכותרת צריכה להיות לפחות 1040 x300 או גדולה יותר.'
 );
 ossn_register_languages('he', $he);

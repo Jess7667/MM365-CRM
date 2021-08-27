@@ -1,10 +1,12 @@
-Open Source Social Network [5.6 LTS]
+Open Source Social Network [6.0 DEV]
 ======================================
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=102)](https://www.opensource-socialnetwork.org/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://www.opensource-socialnetwork.org/)
-[![Build Status](https://travis-ci.org/opensource-socialnetwork/opensource-socialnetwork.svg?branch=v5.x)](https://travis-ci.org/opensource-socialnetwork/opensource-socialnetwork)
 [![Download Latest](https://img.shields.io/badge/Download-Latest%20Version-blue.svg)](https://www.opensource-socialnetwork.org/download)
+
+[![Build Status](https://travis-ci.org/opensource-socialnetwork/opensource-socialnetwork.svg?branch=v5.x)](https://travis-ci.org/opensource-socialnetwork/opensource-socialnetwork)
 [![DeepScan grade](https://deepscan.io/api/teams/4774/projects/6525/branches/54923/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=4774&pid=6525&bid=54923)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/88c6ef38f593440cafe7ba350e592649)](https://www.codacy.com/gh/opensource-socialnetwork/opensource-socialnetwork/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=opensource-socialnetwork/opensource-socialnetwork&amp;utm_campaign=Badge_Grade)
 
 Opensource-Socialnetwork (OSSN) is a social networking software written in PHP. It allows you to make a social networking website and helps your members build social relationships, with people who share similar professional or personal interests. It is available in 16 international languages.
 
@@ -12,9 +14,10 @@ OSSN Licensed under the ***Open Source Social Network License (4.0) / Cryptograp
 
 Kernighan & Ritchie (K&R Variant 1TBS) indentation standard is used for the OSSN.
 
-- Copyright (C) 2014-2020 ENGR. SYED ARSALAN HUSSAIN SHAH <arsalan@buddyexpress.net>,
-- Copyright (C) 2014-2020 OPEN SOURCE SOCIAL NETWORK <https://www.opensource-socialnetwork.org>,
-- Copyright (C) 2015-2020 SOFTLAB24 LTD <https://www.softlab24.com>
+- Copyright (C) 2014-2021 ENGR. SYED ARSALAN HUSSAIN SHAH <arsalan@buddyexpress.net>,
+- Copyright (C) 2014-2021 OPEN SOURCE SOCIAL NETWORK <https://www.opensource-socialnetwork.org>,
+- Copyright (C) 2021-2021 OPEN TEKNIK LLC <https://www.openteknik.com>,
+- Copyright (C) 2015-2021 SOFTLAB24 LTD <https://www.softlab24.com>
 - Copyright (C) 2014-2015 INFORMATIKON TECHNOLOGIES <https://www.informatikon.com>
 
 | Landing Page | Newsfeed | Profile Page |
@@ -23,65 +26,39 @@ Kernighan & Ritchie (K&R Variant 1TBS) indentation standard is used for the OSSN
 
 Visit https://www.opensource-socialnetwork.org/ for more details 
 
+
 Languages
 ==========
-* English
-* German
-* French
-* Romanian
-* Portuguese
-* Turkish
-* Spanish
-* Italian
-* Russian
-* Dutch
-* Hebrew
-* Greek
-* Esperanto 
-* Japanese
-* Indonesian
-* Traditional Chinese
+
+|  |  |  |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+| English |German | Romanian | 
+| French | Portuguese | Turkish |
+| Spanish | Italian | Russian | 
+| Dutch | Hebrew | Greek |
+| Esperanto | Japanese | Indonesian |
+| Traditional Chinese | | 
 
 Front-End Features
 ===================
-* User Registration
-* User Login
-* Profile 
-* Profile Photo
-* Profile Cover
-* Add/Remove Friends
-* Live Chat
-* Wall posts
-* Photos
-* Ads
-* Groups
-* Tag friends in posts
-* User block system
-* User poke system
-* Comments
-* Likes
-* Reactions
-* Photos in comments.
-* Group cover photos
-* Repostion Profile/Group cover
-* Notifications
-* Friend Requests
-* Chat Bar
-* Invite Friends
-* Embed Videos
-* Smilies
-* SitePages (terms, privacy, about)
-* Site Search
-* Reset Password
-* Newsfeed page
-* Post Edit
-* Comment Edit
-* Mobile Friendly
-* A photo gallery view.
-* Emojii Support
-* Post Background
-* Realtime messages status
-* Realtime comments status
+
+| Feature | Feature |  Feature |  
+|:-------------------------:|:-------------------------:|:-------------------------:|
+| User Registration  | User Login | Profile |
+| Profile Cover | Profile Photo | Profile Friends | 
+| Friends Management | Live Chat | Messaging | 
+| Wall Posts | Albums | Photos | Ads | 
+| Groups | Friends Tagging | Block System | 
+| Poke System | Comments | Likes and Reactions |
+| Expense Mangement | Giphy Integeration in Comments |  Invite Friends | 
+| Embed Videos | Smiles & Emojis | Site Pages (Terms, about, privacy) |
+| Mobile Responsive |  Notifications | Search | 
+| Gallery | Post Background | Realtime Comments | 
+| Realtime Messages | Blogs | Themes on community |
+| Mentions in comments | Custom Pages | Custom Menu Items |
+| Captcha | Site Announcements | Greetings | 
+| Login as | Progressive Web App | Microsoft Active Directory Login |
+| Giphy Integeration | Many free components of community website |
 
 Backend Features
 =================
@@ -136,4 +113,3 @@ http://demo.opensource-socialnetwork.org/
 UPGRADE
 ========
 https://www.opensource-socialnetwork.org/wiki/view/708/how-to-upgrade-ossn
-

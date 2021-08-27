@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -33,7 +33,7 @@ function ossn_wall() {
 		}
 		//css and js
 		ossn_extend_view('css/ossn.default', 'css/wall');
-		ossn_extend_view('js/opensource.socialnetwork', 'js/ossn_wall');
+		ossn_extend_view('js/ossn.site', 'js/ossn_wall');
 		
 		ossn_new_external_js('jquery.tokeninput', 'vendors/jquery/jquery.tokeninput.js');
 		
@@ -246,8 +246,10 @@ function ossn_post_page($pages) {
 						if(empty($post->guid) || empty($pages[1])) {
 								ossn_error_page();
 						}
+						$loggedin =  ossn_loggedin_user();
 						//Posts having friends privacy are visible to public using direct URL #1484
-						if($post->access == OSSN_FRIENDS && !ossn_isLoggedin()){
+						//re-opened on 27-06-2021 thanks to Haydar Alkaduhimi for reporting it.
+						if( ($post->access == OSSN_FRIENDS && !ossn_isLoggedin()) || ($post->access == OSSN_FRIENDS && ossn_isLoggedin() && !ossn_user_is_friend($loggedin->guid, $post->poster_guid)) ){
 								ossn_error_page();	
 						}						
 						$params['post'] = $post;
@@ -550,8 +552,11 @@ function ossn_wallpost_to_item($post) {
 				if(!isset($post->poster_guid)) {
 						$post = ossn_get_object($post->guid);
 				}
-				$data     = json_decode(html_entity_decode($post->description));
-				$text     = ossn_restore_new_lines($data->post, true);
+				$data = json_decode(html_entity_decode($post->description));
+				$text = '';
+				if($data){
+					$text     = ossn_restore_new_lines($data->post, true);
+				}
 				$location = '';
 				
 				if(isset($data->location)) {
@@ -564,6 +569,12 @@ function ossn_wallpost_to_item($post) {
 				}
 				
 				$user = ossn_user_by_guid($post->poster_guid);
+				if(!isset($data->friend)){
+					if(!$data){
+						$data = new stdClass();	
+					}
+					$data->friend = "";	
+				}
 				return array(
 						'post' => $post,
 						'friends' => explode(',', $data->friend),

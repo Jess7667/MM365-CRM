@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -13,14 +13,16 @@ $albums = new OssnAlbums;
 $profile = new OssnProfile;
 
 $photos = $albums->GetAlbums($params['user']->guid);
-
-$albums->count = true;
-$count = $albums->GetAlbums($params['user']->guid);
+$count = $albums->GetAlbums($params['user']->guid, array(
+			'count' => true,														 
+));
+$offset 	   = input('offset');
 $profiel_photo = $params['user']->iconURL()->larger;
 $pphotos_album = ossn_site_url("album/profile/{$params['user']->guid}");
 
 $profile_covers_url = ossn_site_url("album/covers/profile/{$params['user']->guid}");
 $profile_cover = $profile->getCoverURL($params['user']);
+if(!$offset || $offset == 1){
 //show profile pictures album
 echo "<li>
 	<a href='{$pphotos_album}'><img src='{$profiel_photo}' class='pthumb' />
@@ -31,6 +33,7 @@ echo "<li>
 	<a href='{$profile_covers_url}'><img src='{$profile_cover}' class='pthumb' />
 	 <div class='ossn-album-name'>" . ossn_print('profile:covers') . "</div></a>
 	</li>";	
+}
 if ($photos) {
     foreach ($photos as $photo) {
         if (ossn_access_validate($photo->access, $photo->owner_guid)) {

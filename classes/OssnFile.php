@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -211,23 +211,31 @@ class OssnFile extends OssnEntities {
 								$this->value   = $this->newfile;
 								
 								if($fileguid = $this->add()) {
-										$filecontents = file_get_contents($this->file['tmp_name']);
+										$sizecheck = filesize($this->file['tmp_name']);
+										//[E] Disallow to upload empty files #1976
+										//https://www.php.net/manual/en/function.is-uploaded-file.php
+										if(!$sizecheck || $sizecheck && empty($sizecheck) || !is_uploaded_file($this->file['tmp_name'])){
+												 $this->deleteEntity($fileguid);	
+												 return false;
+										}
 										if(preg_match('/image/i', $this->file['type'])) {
 												//fix rotation #918
 												$this->resetRotation($this->file['tmp_name']);
 												
 												//allow devs to change default size , see #528
 												$image_res = array(
-														'width' => 2048,
-														'height' => 2048
+														'width' => 1500,
+														'height' => 1500
 												);
 												$image_res = ossn_call_hook('file', 'image:resolution', $this, $image_res);
 												
 												//compress image before save
 												$filecontents = ossn_resize_image($this->file['tmp_name'], $image_res['width'], $image_res['height']);
+												file_put_contents("{$this->dir}{$this->newfilename}", $filecontents);
+												return $fileguid; 	
+										} elseif(move_uploaded_file($this->file['tmp_name'], "{$this->dir}{$this->newfilename}")){
+												return $fileguid; 	
 										}
-										file_put_contents("{$this->dir}{$this->newfilename}", $filecontents);
-										return $fileguid;
 								}
 						}
 				}
@@ -345,7 +353,11 @@ class OssnFile extends OssnEntities {
 				$files = scandir($from);
 				foreach($files as $fname) {
 						if($fname != '.' && $fname != '..') {
-								rename($from . $fname, $to . $fname);
+								if(is_dir($from . $fname)){
+										self::moveFiles($from . $fname . DIRECTORY_SEPARATOR, $to . $fname . DIRECTORY_SEPARATOR);
+								}else if(is_file($from . $fname)){
+										rename($from . $fname, $to . $fname);
+								}
 						}
 				}
 				self::DeleteDir($from);
@@ -376,6 +388,9 @@ class OssnFile extends OssnEntities {
 						),
 						'jpeg' => array(
 								'image/jpeg'
+						),
+						'jfif' => array(
+						        'image/jpeg'
 						),
 						'jpg' => array(
 								'image/jpeg'

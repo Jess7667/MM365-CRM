@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -37,14 +37,14 @@ $params['count'] =  $OssnMessages->recentChat(ossn_loggedin_user()->guid, true);
                             $user = ossn_user_by_guid($message->message_from);
                             $text = ossn_call_hook('messages', 'message:smilify', $args, strl($message->message, 32));
 							$replied = ossn_print('ossnmessages:replied:you', array($text));
-							if($message->is_deleted == true){
+							if(isset($message->is_deleted) && $message->is_deleted == true){
 								$replied = ossn_print('ossnmessages:deleted');	
 							}
                             $replied = "<i class='fa fa-reply'></i><div class='reply-text'>{$replied}</div>";
                         } else {
                             $user = ossn_user_by_guid($message->message_from);
                             $text = ossn_call_hook('messages', 'message:smilify', $args, strl($message->message, 32));
-							if($message->is_deleted == true){
+							if(isset($message->is_deleted) && $message->is_deleted == true){
 								$text = ossn_print('ossnmessages:deleted');	
 							}							
                             $replied = "<div class='reply-text-from'>{$text}</div>";

@@ -71,7 +71,11 @@
 	cursor: pointer;
 	font-weight: bold;
 }
-
+.ossn-comment-attach-photo .fa-smile-o {
+	margin-top: 3px;
+    font-size: 18px;
+    color:#999;
+}
 .comment-container .emojii-container-main {
 	float: right;
 	margin-right: 285px;
@@ -81,15 +85,6 @@
 	float: right;
 	position: relative;
 	top: 105px;
-}
-
-
-/***************************************
-	Override the comment box width
-****************************************/
-
-.comment-box {
-	padding: 6px 65px 6px 12px !important;
 }
 
 .comment-container {

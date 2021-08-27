@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -262,6 +262,7 @@ class OssnAnnotation extends OssnEntities {
 						return false;
 				}
 				$this->owner_guid = $ownerguid;
+				$this->type = false;
 				$annotations      = $this->getAnnotationsByOwner();
 				if($annotations) {
 						foreach($annotations as $annotation) {
@@ -299,6 +300,7 @@ class OssnAnnotation extends OssnEntities {
 				$default      = array(
 						'search_type' => true,
 						'type' => false,
+						'distinct' => false,
 						'owner_guid' => false,
 						'annotation_id' => false,
 						'subject_guid' => false,

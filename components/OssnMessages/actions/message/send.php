@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -16,6 +16,11 @@ if(trim(ossn_restore_new_lines($message)) == ''){
 	exit;
 }
 $to = input('to');
+//[E] Check user existence before sending message #1883
+if(!ossn_user_by_guid($to)) {
+    echo 0;
+    exit;
+}
 if ($message_id = $send->send(ossn_loggedin_user()->guid, $to, $message)) {
 	$user = ossn_user_by_guid(ossn_loggedin_user()->guid);
 	

@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -37,11 +37,11 @@ class OssnPagination {
 				if(count($_GET)) {
 						$args_url = '';
 						foreach($_GET as $key => $value) {
-								if(!preg_match('/^[a-zA-Z0-9 _\p{L}]+$/u', $value) || in_array($key, $unset)) {
+								//validate input again
+								$value = input($key);							
+								if(in_array($key, $unset)) {
 										continue;
 								}
-								//validate input again
-								$value = input($key);
 								if($key != 'page') {
 										$value = input($key);
 										$args_url .= '&' . $key . '=' . $value;

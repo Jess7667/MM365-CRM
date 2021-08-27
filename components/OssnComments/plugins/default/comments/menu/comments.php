@@ -2,17 +2,17 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
 $commentmenu = $params['menu'];
 if($commentmenu){
 ?>
-<a id="dLabel" role="button" data-toggle="dropdown" data-target="#">
-	<i class="fa fa-sort-desc"></i>
+<a id="dLabel" role="button" data-bs-toggle="dropdown" data-bs-target="#">
+	<i class="fa fa-ellipsis-h"></i>
 </a>
 <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 		<?php

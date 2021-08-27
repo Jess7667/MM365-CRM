@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -103,7 +103,8 @@ function ossn_ads_handler($pages) {
  */
 function ossn_ads_image_url($guid) {
 		$image = md5($guid);
-		return ossn_site_url("ossnads/photo/{$guid}/{$image}.jpg");
+		$image = ossn_site_url("ossnads/photo/{$guid}/{$image}.jpg");
+		return ossn_add_cache_to_url($image);
 }
 /**
  * Get ad entity

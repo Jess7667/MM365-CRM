@@ -2,9 +2,9 @@
 /**
  *  Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -28,7 +28,7 @@ Ossn.RegisterStartupFunction = function($func) {
  * @return void
  */
 Ossn.Clk = function($elem) {
-	$($elem).click();
+	$($elem).trigger('click');
 };
 /**
  * Ossn.str_replace
@@ -380,7 +380,7 @@ Ossn.is_callable = function(mixedVar, syntaxOnly, callableName){
  * @return boolean
  */
 Ossn.is_hook = function($hook, $type){
-	if(Ossn.isset(Ossn.hooks[$hook][$type])){
+	if(Ossn.hooks[$hook] && Ossn.hooks[$hook][$type]){
 		return true;
 	}
 	return false;

@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -17,6 +17,8 @@ if($comment && (strlen($text) || $comment->{'file:comment:photo'})) {
 		$comment->data	= new stdClass;
 		if($comment->type == 'comments:entity') {
 				$comment->data->{'comments:entity'} = $text;
+		} elseif($comment->type == 'comments:object') {
+				$comment->data->{'comments:object'} = $text;
 		} elseif($comment->type == 'comments:post') {
 				$comment->data->{'comments:post'} = $text;
 		}

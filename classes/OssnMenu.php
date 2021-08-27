@@ -2,9 +2,9 @@
 /**
  * Open Source Social Network
  *
- * @package   (softlab24.com).ossn
- * @author    OSSN Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @package   (openteknik.com).ossn
+ * @author    OSSN Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -59,7 +59,9 @@ class OssnMenu {
 						$list = array();
 						foreach($Ossn->menu[$menutype] as $items) {
 								foreach($items as $item) {
-										$list[] = $item['priority'];
+										if(isset($item['priority'])){
+											$list[] = $item['priority'];
+										}
 								}
 						}
 						return array_unique($list);
@@ -104,6 +106,9 @@ class OssnMenu {
 				}
 				foreach($Ossn->menu[$menutype] as $name => $items) {
 						foreach($items as $item) {
+								if(!isset($item['priority'])){
+									$item['priority'] = null;	
+								}
 								$custom[$menutype][$item['priority']][$name] = $item;
 						}
 				}

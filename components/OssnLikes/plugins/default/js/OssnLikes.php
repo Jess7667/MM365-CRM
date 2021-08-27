@@ -3,8 +3,8 @@
  * Open Source Social Network
  *
  * @package   Open Source Social Network
- * @author    Open Social Website Core Team <info@softlab24.com>
- * @copyright (C) SOFTLAB24 LIMITED
+ * @author    Open Social Website Core Team <info@openteknik.com>
+ * @copyright (C) OpenTeknik LLC
  * @license   Open Source Social Network License (OSSN LICENSE)  http://www.opensource-socialnetwork.org/licence
  * @link      https://www.opensource-socialnetwork.org/
  */
@@ -116,7 +116,62 @@ Ossn.EntityLike = function(entity, $reaction_type = '') {
 						$parent.find('.menu-likes-comments-share').after(callback['container']);
 				}				
             } else {
-                $('#ossn-elike-' + post).html(Ossn.Print('like'));
+                $('#ossn-elike-' + entity).html(Ossn.Print('like'));
+            }
+        },
+    });
+
+};
+
+
+Ossn.ObjectUnlike = function(object_guid) {
+    Ossn.PostRequest({
+        url: Ossn.site_url + 'action/post/unlike',
+        beforeSend: function() {
+            $('#ossn-olike-' + object_guid).html('<img src="' + Ossn.site_url + 'components/OssnComments/images/loading.gif" />');
+        },
+        params: '&object=' + object_guid,
+        callback: function(callback) {
+            if (callback['done'] !== 0) {
+                $('#ossn-olike-' + object_guid).html(callback['button']);
+                $('#ossn-olike-' + object_guid).attr('data-reaction', 'Ossn.ObjectLike(' + object_guid + ', "<<reaction_type>>");');
+				$('#ossn-olike-' + object_guid).removeAttr('onclick'); 
+				//reactions				
+				$parent = $('#ossn-olike-' + object_guid).parent().parent().parent();				
+				if(callback['container']){
+						$parent.find('.like-share').remove();
+						$parent.find('.menu-likes-comments-share').after(callback['container']);
+				}
+				if(!callback['container']){
+						$parent.find('.like-share').remove();	
+				}
+            } else {
+                $('#ossn-olike-' + object_guid).html(Ossn.Print('unlike'));
+            }
+        },
+    });
+
+};
+Ossn.ObjectLike = function(object_guid, $reaction_type = '') {
+    Ossn.PostRequest({
+        url: Ossn.site_url + 'action/post/like',
+        beforeSend: function() {
+            $('#ossn-olike-' + object_guid).html('<img src="' + Ossn.site_url + 'components/OssnComments/images/loading.gif" />');
+        },
+        params: '&object=' + object_guid + '&reaction_type='+$reaction_type,
+        callback: function(callback) {
+            if (callback['done'] !== 0) {
+                $('#ossn-olike-' + object_guid).html(callback['button']);
+                $('#ossn-olike-' + object_guid).attr('onClick', 'Ossn.ObjectUnlike(' + object_guid + ');');
+				$('#ossn-olike-' + object_guid).removeAttr('data-reaction'); 
+				//reactions				
+				if(callback['container']){
+						$parent = $('#ossn-olike-' + object_guid).parent().parent().parent();
+						$parent.find('.like-share').remove();
+						$parent.find('.menu-likes-comments-share').after(callback['container']);
+				}				
+            } else {
+                $('#ossn-olike-' + object_guid).html(Ossn.Print('like'));
             }
         },
     });
@@ -160,6 +215,9 @@ Ossn.RegisterStartupFunction(function() {
 			 $parent.find('.ossn-like-reaction-angry').attr('onclick', $angry);
    	};
 	$("body").on('mouseenter touchstart', '.post-control-like, .entity-menu-extra-like',function(){
+			 $MenuReactions($(this));
+	});		
+	$("body").on('mouseenter touchstart', '.post-control-like, .object-menu-extra-like',function(){
 			 $MenuReactions($(this));
 	});		
 	/*** for comments ***/
@@ -224,7 +282,7 @@ Ossn.RegisterStartupFunction(function() {
 								.attr('data-type', 'Like')
 								.attr('href', $(this).attr('href'));
 	});			
-    $(document).delegate('.ossn-like-comment-react, .ossn-like-comment', 'click', function(e) {
+    $('body').on('click', '.ossn-like-comment-react, .ossn-like-comment', function(e) {
             e.preventDefault();
             var $item = $(this);
             var $type = $.trim($item.attr('data-type'));
